@@ -163,6 +163,6 @@ Berdasarkan analisis dan informasi yang diperoleh dari data, berikut ini beberap
 2.	Pengguna casual mayoritas menggunakan sepeda pada akhir pekan, sehingga menawarkan paket khusus sebagai member tahunan pada akhir pekan dapat dicoba sembari menonjolkan keuntungan yang diperoleh sebagai member tahunan.
 3.	Berdasarkan durasi perjalanan, pengendara casual kemungkinan memiliki waktu yang cukup fleksibel, pengguna casual mungkin menggunakan sepeda untuk tujuan rekreasi. Untuk menarik pengguna casual menjadi member, menonjolkan pengehematan biaya yang diperoleh sebagai member tahunan dibandingkan sebagai casual dan memberikan diskon dapat dicoba untuk meningkatkan pengguna member.
 
-
-
-
+DASHBOARD
+---
+![Image](https://github.com/user-attachments/assets/2df7beee-c1ef-4bf8-9a7b-59cdf90e156d)
