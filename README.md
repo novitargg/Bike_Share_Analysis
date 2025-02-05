@@ -22,18 +22,18 @@ Tiga pertanyaan yang akan memandu program pemasaran di masa depan:
 
 PERSIAPAN
 --
-### Dataset
+#### Dataset
 Dataset perjalanan historis Cylistic bersumber [sini](divvy-tripdata.s3.amazonaws.com). 
 
 Catatan: 
 Dataset tersebut memiliki nama yang berbeda karena Cyclistic adalah perusahaan fiksi. Data telah disediakan oleh Motivate International Inc dengan lisensi. 
 
-### Keterangan Data
+#### Keterangan Data
 Dataset yang digunakan merupakan data dengan periode juni 2023-juni 2024. Data yang disediakan dalam format zip, selanjutnya data tersebut terlebih dahulu disimpan dalam folder yang sama dengan format csv (comma-separate value). Data disimpan dalam format YYYYMM-divvy-tripdata.
 
 Dataset terdiri dari variabel: ride_id, rideable_type, started_at, ended_at, start_station_name, start_station_id, end_station_name, end_station_id, start_lat, start_lng, end_lat, end_lng, member_casual.
 
-### Kredibilitas Data
+#### Kredibilitas Data
 Memastikan kredibilitas dan integritas data akan menggunakan sistem ROCC.
 - Reliable: Data memiliki ukuran sampel yang besar, sehingga mencerminkan ukuran populasi.
 - Original: Sumber keaslian data dapat ditemukan
@@ -41,7 +41,7 @@ Memastikan kredibilitas dan integritas data akan menggunakan sistem ROCC.
 - Current: Data relevan dan terkini
 - Cited: Sumber data telah diperiksa yaitu disediakan oleh Motivate International Inc.
 
-### Keterbatasan Data
+#### Keterbatasan Data
 Aturan privasi data melarang menggunakan informasi pengenal pribadi pengendara. 
 
 PROCESS
@@ -51,24 +51,24 @@ Pada tahap proses, data akan dibersihkan agar kualitas dan integritas data serta
 #### Tools yang digunakan:
 DB SQL Lite dan Tableau
 
-### Validasi data
-Sebelum membersihkan data, terlebih dahulu data akan diidentifikasi untuk melihat bagian-bagian data yang masih perlu diperbaiki atau dibersihkan.
+#### Validasi data
+Sebelum membersihkan data, terlebih dahulu data akan diidentifikasi untuk melihat bagian-bagian data yang masih perlu diperbaiki atau dibersihkan.Pada gambar dibawah akan diperlihatkan bentuk data yang akan diproses.
 
-Pada gambar dibawah akan diperlihatkan bentuk data yang akan diproses
 ![Image](https://github.com/user-attachments/assets/b8a09ec1-9b16-4c3b-91b0-1d02e001600c)
  
 Dari tabel tersebut, diperlihatkan bahwa terdapat 6.453.999 jumlah keseluruhan baris dan 13 kolom. Selanjutnya akan dilakukan pemeriksaan atau validasi data.
 
 ![Image](https://github.com/user-attachments/assets/ed8b94e1-d53d-4db3-b0f2-652a1140ff79)
 
-- Pemeriksaan Format
+Berikut adalah langkah validasi data yang dilakukan.
+- Pemeriksaan Format:
 Format kolom started_at dan started_end belum dalam format tanggal, sehingga masih harus diperbaiki.
-- Pemeriksaan Kehadiran Data
+- Pemeriksaan Kehadiran Data:
 Pada kolom start_station name dan start_station_id terdapat 1049262 baris yang kosong, pada kolom end_station name dan end_station_id terdapat 1104606 baris yang kosong, dan pada kolom end_lat dan end_lng terdapat 8808 baris yang kosong. Selanjutnya terdapat 211 baris yang duplikat. Pada pembersihan data, baris yang kosong dan duplikat akan dihapus guna meningkatkan kualitas data.
-- Pemeriksaan Kelengkapan Data
---pemeriksaan durasi lebih dari sehari dan durasi kurang dari semenit
+- Pemeriksaan Kelengkapan Data:
+  - ***pemeriksaan durasi lebih dari sehari dan durasi kurang dari semenit:*** 
 Hasil pemerikasaan menunjukkan terdapat 8723 jumlah pengendara sepeda yang memakai sepeda lebih dari sehari dan terdapat 155019 jumlah pengendara sepeda yang memakai sepeda kurang dari semenit. Selanjutnya pada pembersihan data nanti akan  dipilih jumlah pengendara sepeda yang lebih dari semenit dan kurang dari 24 jam.
--- pemeriksaan variabel
+  - ***pemeriksaan variabel:***
 Pada kolom rideable_type hanya memiliki tiga tipe yaitu classic_bike, docked_bike, dan electric_bike. Setelah dicek, terlihat bahwa kolom member_casual hanya memiliki dua input yaitu member dan casual. Selanjutnya pada keseluruhan baris di kolom ride_id memiliki 16 karakter. Kelengkapan data untuk kolom rideable_type, member_casual, dan ride_id sudah benar.
 
 Cleaning Data
@@ -77,16 +77,21 @@ Proses pembersihan data pada proyek ini masih menggunakan DB Browser SQLite. Pad
 Setelah data diekstrak dari kolom sebelumnya, maka dibawah ini akan dijelaskan tahapan yang dilakukan.
 
 - Perbaikan format data tanggal
+
+Format kolom started_at dan started_end disesuaikan dalam format tanggal
 - Menghapus data kosong dan data duplikat
 
-Pada proses pembuatan tabel baru, menjadikan ride_id sebagai primary key mengindikasikan bahwa ride_id yang duplikat tidak akan diikutsertakan. Oleh karena itu, pada kolom cleaned_annual_tripdata sudah tidak ada lagi data yang duplikat. 
-Selanjutnya, data yang diidentifikasi memiliki baris yang kosong pada tahap pengecekan akan dihapus menggunakan perintah DROP.
+Pada kolom cleaned_annual_tripdata sudah tidak ada lagi data yang duplikat. Selanjutnya, data yang diidentifikasi memiliki baris yang kosong pada tahap pengecekan sudah dihapus menggunakan perintah DROP.
+
 - Menambahkan kolom day_of_week dan month_name
+
 Selanjutnya akan ditambahkan kolom day_of_week yang menunjukkan hari dimana perlajalanan dimulai, dan kolom month_name yang menunjukkan bulan saat perjalanan dimulai.
+
 - Menambahkan kolom length_ride
+
 Kolom length_ride akan ditambahkan, kolom ini menunjukkan durasi perjalanan pengendera sepeda dengan mengurangkan kolom ended_at dengan started_at. Kolom length_ride menunjukkan durasi perjalanan pengendara sepeda yang memakai sepeda lebih dari semenit dan kurang dari 24 jam. Pada kolom ride_length, data berisi jumlah waktu dalam menit.
 
-Tabel cleaned_annual_tripdata sudah memiliki kolom tambahan yaitu day_of_week, month_name, dan ride_length.
+Tabel cleaned_annual_tripdata sudah memiliki kolom tambahan yaitu day_of_week, month_name, dan ride_length. Gambar dibawah ini menunjukkan format yang sudah benar dan kolom baru yang sudah ditambahkan.
 ![Image](https://github.com/user-attachments/assets/f77d739a-e637-4988-b44a-3d698e66d961)
 
 ANALISIS
@@ -111,7 +116,7 @@ Untuk menjawab pertanyaan tersebut, akan dilakukan eksplorasi terhadap data untu
 Berdasarkan line chart, jumlah pengguna member tahunan selalu lebih tinggi dibandingkan pengendara casual. Dibawah ini akan ditunjukkan variasi yang lebih mendalam dari chart diatas.
 
 - Per bulan: Pengendara sepeda casual maupun member menunjukkan perilaku yang sama yaitu perjalanan yang memuncak saat bulan juni, juli, dan agustus yang mungkin terjadi karena adanya liburan musim panas.
-- Per hari : Pengendara sepeda member menunjukkan penggunaan sepeda yang meningkat konsisten dan sedikit menurun pada akhir pekan, sementara pengendara casual meningkat pada saat akhir pekan.
+- Per hari: Pengendara sepeda member menunjukkan penggunaan sepeda yang meningkat konsisten dan sedikit menurun pada akhir pekan, sementara pengendara casual meningkat pada saat akhir pekan.
 - Per jam:  Pengendara sepeda member menunjukkan lonjakan pada jam 6-8, dan pada jam 16-20. Pengendara sepeda casual menunjukkan perjalanan yang meningkat konsisten dan paling tinggi pada saat jam 16-20.
 
 ### Analisis pengendara berdasarkan durasi penggunaan sepeda 
@@ -125,8 +130,8 @@ Berdasarkan line chart, jumlah pengguna member tahunan selalu lebih tinggi diban
 Berdasarkan ketiga line chart, pengendara sepeda casual maupun member memiliki kesamaan yaitu pengendara casual memiliki durasi perjalanan yang lebih lama dibandingkan pengendara member. 
 Selanjutnya akan diperlihatkan variasi yang lebih mendalam dari chart diatas. 
 - Per bulan: Durasi perjalanan pengendara sepeda menaik pada bulan april hingga akhir agustus, yang menunjukkan jarak tempuh pengendara pada bulan tersebut lebih jauh dari bulan sebelumnya.
-- Per hari : Pola garis menunjukkan pola yang sama bagi kedua jenis pengendara yaitu durasi perjalanan meningkat pada saat mendekati awal hari kerja dan akhir pekan.
-- Per jam : Durasi perjalanan pengendara casual menunjukkan lonjakan pada jam 10 hingga jam 2 siang sementara durasi member memiliki pola yang konsisten pada setiap jam.
+- Per hari: Pola garis menunjukkan pola yang sama bagi kedua jenis pengendara yaitu durasi perjalanan meningkat pada saat mendekati awal hari kerja dan akhir pekan.
+- Per jam: Durasi perjalanan pengendara casual menunjukkan lonjakan pada jam 10 hingga jam 2 siang sementara durasi member memiliki pola yang konsisten pada setiap jam.
 
 ### Analisis tipe sepeda
  
